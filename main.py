@@ -7,7 +7,7 @@ from siam_game.ressources import *
 pygame.init()
 
 clock = pygame.time.Clock()
-screen = pygame.display.set_mode((width, height))
+screen = pygame.display.set_mode((screen_width,screen_height))
 
 print(square)
 
@@ -25,5 +25,7 @@ def MainGame():
                 quit()
 
         screen.blit(rhino, (50,50))
+        screen.blit(eleph,(50,50))
+        screen.blit(mont,(50,50))
 
 MainGame()
