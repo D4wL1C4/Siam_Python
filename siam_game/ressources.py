@@ -2,8 +2,8 @@ import pygame
 
 
 #definition de la taille de l'ecran
-screen_width = 800
-screen_height = 800
+screen_width = 1000
+screen_height = 1000
 
 #le nombre de lignes et de colonnes
 row = 5
@@ -12,8 +12,7 @@ col = 5
 #nombre cases 
 case_number = row * col
 
-#taille case = côté divisé par le nombre de colonne ou ligne(= car carré) (// : division euclidienne)
-square = screen_width // row
+square = 100
 
 #definition des couleurs des cases du plateau
 l_brown = (225, 128, 23)
