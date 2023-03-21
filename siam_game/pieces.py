@@ -27,19 +27,12 @@ class Rhino:
         if self.rect.collidepoint(mousePos) and self.selected == False:
             print(f"click sur {self.name}")
             self.selected = True
-        elif self.rect.collidepoint(mousePos) and self.selected == True and self.canPlace == True: 
-            piecesRects.remove(f"{self.name}.rect")
-            for rect in piecesRects:
-                if rect.colliderect(self.rect):
-                    print("intersect")
-                # ne pas poser
-                else:
-                    self.selected = False
-                    self.rect.center = 250, 250
-                    self.rect.center = 250 + int((mousePos[0] - 250)/100)* square + square/2, 250 + int((mousePos[1] - 250)/100)* square + square/2
-                    self.posX, self.posY = self.rect.centerx - square/2, self.rect.centery - square/2
-                    print(f"reclick sur {self.name}")
-            piecesRects.append(f"{self.name}.rect")
+        elif self.rect.collidepoint(mousePos) and self.selected == True: 
+            self.selected = False
+            self.rect.center = 250, 150
+            self.rect.center = 250 + int((mousePos[0] - 250)/100)* square + square/2, 150 + int((mousePos[1] - 150)/100)* square + square/2
+            self.posX, self.posY = self.rect.centerx - square/2, self.rect.centery - square/2
+            print(f"reclick sur {self.name}")
 
     def move(self, x, y):
         if self.selected == True:
@@ -78,4 +71,5 @@ mountain_3 = Montagne(screen, 550, 450, mont, "mountain_3")
 pieces = [rhino_1, rhino_2, rhino_3, rhino_4, rhino_5, eleph_1, eleph_2, eleph_3, eleph_4, eleph_5, mountain_1, mountain_2, mountain_3]  
 
 piecesRects = [rhino_1.rect, rhino_2.rect, rhino_3.rect, rhino_4.rect, rhino_5.rect, eleph_1.rect, eleph_2.rect, eleph_3.rect, eleph_4.rect, eleph_5.rect, mountain_1.rect, mountain_2.rect, mountain_3.rect]
+
 
