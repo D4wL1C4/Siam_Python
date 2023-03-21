@@ -1,5 +1,7 @@
 import pygame
+import os
 
+screen = pygame.display.set_mode((1000, 1000))
 
 #definition de la taille de l'ecran
 screen_width = 1000
@@ -15,8 +17,8 @@ case_number = row * col
 square = 100
 
 #definition des couleurs des cases du plateau
-l_brown = (225, 128, 23)
-green = (124, 176, 62)
+color1 = (195,142,95)
+color2 = (117,162,203)
 
 #Charger les pieces
 #Rhinocéros
@@ -30,3 +32,6 @@ eleph = pygame.transform.scale(eleph, (square, square))
 #montagne
 mont = pygame.image.load("siam_game/sources/montagne.png")
 mont = pygame.transform.scale(mont, (square, square))
+
+bgImage = pygame.image.load("siam_game/sources/bg_siam.png")
+bgImage = pygame.transform.scale(bgImage, (1500,1000))
