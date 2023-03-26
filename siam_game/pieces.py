@@ -37,9 +37,6 @@ class Rhino:
             self.posX, self.posY = self.rect.centerx - square/2, self.rect.centery - square/2
             print(f"reclick sur {self.name}")
     
-            
-            
-
     def move(self, x, y):
         if self.selected == True:
             self.posX = x - square/2
