@@ -38,3 +38,6 @@ bgImage = pygame.transform.scale(bgImage, (1500,1000))
 
 play = pygame.image.load("siam_game/sources/TitlePlay.png")
 play = pygame.transform.scale_by(play, .5)
+
+registerButton = pygame.image.load("siam_game/sources/Register.png")
+loginButton = pygame.image.load("siam_game/sources/login.png")
