@@ -5,6 +5,7 @@ import random
 from siam_game.ressources import *
 from siam_game.pieces import *
 from siam_game.plateau import drawPlate
+from siam_game.dataMenu import *
 
 pygame.init()
 
@@ -14,7 +15,6 @@ rhino_rect = pygame.Surface.get_rect(rhino)
 def initGame():
     #dessiner le plateau et placer tous les pions au bon endroit
     drawPlate(screen, color1, color2, 250, 250, square, square) #Plateau
-    
 
 def MainMenu():
     pygame.display.set_caption("Menu principal")
@@ -34,10 +34,43 @@ def MainMenu():
                 quit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if play_rect.collidepoint(mousePos):
-                    MainGame()
+                    screen.fill((0,0,0))
+                    Accounts()
         screen.blit(bgImage, (0,0))
         screen.blit(play,(300,300))
+        pygame.display.flip()    
+
+def Accounts():
+    pygame.display.set_caption("Comptes")
+    run = True
+    fps = 60
+
+    register_rect = registerButton.get_rect()
+    register_rect.topleft = 350,350
+    
+    login_rect = loginButton.get_rect()
+    login_rect.topleft = 350,550
+
+    while run:
+        mousePos = pygame.mouse.get_pos()
+        clock.tick(fps)
+        pygame.display.update()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+                quit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if register_rect.collidepoint(mousePos):
+                    register()
+                if login_rect.collidepoint(mousePos):
+                    login()
+        if logedIn == True:
+            MainGame() 
+        screen.blit(bgImage, (0,0))
+        screen.blit(registerButton, (350,350))
+        screen.blit(loginButton,(350,550))
         pygame.display.flip()
+        
 
 def MainGame():
     pygame.display.set_caption("Fenêtre de jeu")
@@ -89,8 +122,8 @@ def MainGame():
         screen.fill((0,0,0))   
         screen.blit(bgImage, (0,0))              
         drawPlate(screen, color1, color2, 250, 250, square, square)       
-        for i in range(6):
-            for k in range(4):
+        for i in range(7):
+            for k in range(5):
                 plateau[i][k] = 0     
         for piece in pieces:
             piece.Update()
