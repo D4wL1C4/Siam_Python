@@ -35,3 +35,6 @@ mont = pygame.transform.scale(mont, (square, square))
 
 bgImage = pygame.image.load("siam_game/sources/bg_siam.png")
 bgImage = pygame.transform.scale(bgImage, (1500,1000))
+
+play = pygame.image.load("siam_game/sources/TitlePlay.png")
+play = pygame.transform.scale_by(play, .5)
