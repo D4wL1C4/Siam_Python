@@ -1,28 +1,30 @@
 import csv
 import pygame
-import random
 
 from siam_game.ressources import *
 from siam_game.pieces import *
 from siam_game.plateau import drawPlate
 from siam_game.dataMenu import *
 
-pygame.init()
-
 clock = pygame.time.Clock()
 rhino_rect = pygame.Surface.get_rect(rhino)
 
+
+
 def initGame():
+    pygame.init()
+    pygame.font.init()
     #dessiner le plateau et placer tous les pions au bon endroit
     drawPlate(screen, color1, color2, 250, 250, square, square) #Plateau
 
 def MainMenu():
+    initGame()
     pygame.display.set_caption("Menu principal")
     run = True
     fps = 60
 
     play_rect = play.get_rect()
-    play_rect.topleft = 300,300
+    play_rect.topleft = 300,400
 
     while run:
         mousePos = pygame.mouse.get_pos()
@@ -36,9 +38,53 @@ def MainMenu():
                 if play_rect.collidepoint(mousePos):
                     screen.fill((0,0,0))
                     Accounts()
+        Title = Titlefont.render("SIAM", 1, (255,255,255))
         screen.blit(bgImage, (0,0))
-        screen.blit(play,(300,300))
+        screen.blit(play,(300,400))
+        screen.blit(Title, (220, 100))
         pygame.display.flip()    
+
+def register():
+    with open('user.csv', "r+", newline='') as f:
+        table = list(csv.DictReader(f, delimiter=";"))
+        username = input("Entre ton pseudo pour t'inscrire : ")
+        for i in range(len(table)):
+            if table[i]["Username"] == username:
+                print("Ce nom d'utilisateur existe déjà")
+                register()
+        writer = csv.writer(f, delimiter=';')
+        password = input('Entre ton mot de passe : ')
+        passw2 = input('Entre le encore une fois : ')
+
+        if password == passw2:
+            writer.writerow([username, password])
+            print('Inscription réussi !')
+        else:
+            print("Ton mot de passe n'est pas le même")
+
+def login():
+    username = input('Entre ton pseudo pour te connecter : ')
+    password = input('Entre ton mot de passe : ')
+    with open('user.csv', mode = 'r') as f:
+        reader = csv.reader(f, delimiter=';')
+        for row in reader:
+            if row == [username, password]: 
+                print('loged in')
+                return username
+        print("Ton nom d'utilisateur ou ton mot de passe est erroné ou n'existe pas")
+        return False
+    
+def login2():
+    username = input('Entre ton pseudo pour te connecter : ')
+    password = input('Entre ton mot de passe : ')
+    with open('user.csv', mode = 'r') as f:
+        reader = csv.reader(f, delimiter=';')
+        for row in reader:
+            if row == [username, password]: 
+                print('loged in')
+                return username
+        print("Ton nom d'utilisateur ou ton mot de passe est erroné ou n'existe pas")
+        return False
 
 def Accounts():
     pygame.display.set_caption("Comptes")
@@ -46,10 +92,16 @@ def Accounts():
     fps = 60
 
     register_rect = registerButton.get_rect()
-    register_rect.topleft = 350,350
+    register_rect.topleft = (30,550)
     
     login_rect = loginButton.get_rect()
-    login_rect.topleft = 350,550
+    login_rect.topleft = (30,650)
+
+    register_rect2 = registerButton.get_rect()
+    register_rect2.topleft = (670,550)
+    
+    login_rect2 = loginButton.get_rect()
+    login_rect2.topleft = (670,650)
 
     while run:
         mousePos = pygame.mouse.get_pos()
@@ -64,17 +116,71 @@ def Accounts():
                     register()
                 if login_rect.collidepoint(mousePos):
                     login()
-        if logedIn == True:
-            MainGame() 
+                if register_rect2.collidepoint(mousePos):
+                    register()
+                if login_rect2.collidepoint(mousePos):
+                    login()
+
+        #Textes
+        Title = Titlefont.render("SIAM", 1, (255,255,255))
+        player1_txt = textfont.render("Joueurs 1 :", 1, (255,255,255))
+        player2_txt = textfont.render("Joueurs 2 :", 1, (255,255,255))
+
         screen.blit(bgImage, (0,0))
-        screen.blit(registerButton, (350,350))
-        screen.blit(loginButton,(350,550))
+
+        #Buttons
+        #Player 1 : 
+        screen.blit(registerButton, (30,550))
+        screen.blit(loginButton,(30,650))
+
+        #Player 2 :
+        screen.blit(registerButton, (670,550))
+        screen.blit(loginButton,(670,650))
+
+        #Afficher les textes
+        screen.blit(Title, (220,100))
+        screen.blit(player1_txt, (15,450))
+        screen.blit(player2_txt, (650,450))
+        pygame.display.flip()
+
+def selectPlayers():
+    with open("user.csv", "r") as f:
+        users = list(csv.reader(f, delimiter=";"))
+    
+    pygame.display.set_caption("Joueurs")
+    run = True
+    fps = 60
+
+    joueur1 = login()
+    joueur2 = login()
+
+    while run:
+        mousePos = pygame.mouse.get_pos()
+        clock.tick(fps)
+        pygame.display.update()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+                quit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                pass
+        
+        ### Textes à afficher
+        Title = Titlefont.render("SIAM", 1, (255,255,255))
+        player1 = textfont.render(f"Joueurs 1 : {joueur1}", 1, (255,255,255))
+        player2 = textfont.render(f"Joueurs 2 : {joueur2}", 1, (255,255,255))
+
+        screen.blit(bgImage, (0,0))
+
+        ### Afficher ces textes
+        screen.blit(Title, (220,100))
+        screen.blit(player1, (30,450))
+        screen.blit(player2, (30,650))
         pygame.display.flip()
         
 
 def MainGame():
     pygame.display.set_caption("Fenêtre de jeu")
-    initGame()
     run = True
     fps = 60
     piecesSelected = 0
@@ -128,7 +234,5 @@ def MainGame():
         for piece in pieces:
             piece.Update()
         pygame.display.flip()
-        
-
         
 MainMenu()
