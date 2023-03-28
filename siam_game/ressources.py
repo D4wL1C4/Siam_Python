@@ -2,10 +2,12 @@ import pygame
 import os
 
 screen = pygame.display.set_mode((1000, 1000))
+pygame.font.init()
 
 #definition de la taille de l'ecran
 screen_width = 1000
 screen_height = 1000
+
 
 #le nombre de lignes et de colonnes
 row = 5
@@ -41,3 +43,6 @@ play = pygame.transform.scale_by(play, .5)
 
 registerButton = pygame.image.load("siam_game/sources/Register.png")
 loginButton = pygame.image.load("siam_game/sources/login.png")
+
+Titlefont = pygame.font.Font("siam_game/sources/Comics Deluxe.ttf", 200)
+textfont = pygame.font.Font("siam_game/sources/Comics Deluxe.ttf", 50)
