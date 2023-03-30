@@ -87,21 +87,10 @@ def login2():
         return False
 
 def Accounts():
+    logins = 0
     pygame.display.set_caption("Comptes")
     run = True
     fps = 60
-
-    register_rect = registerButton.get_rect()
-    register_rect.topleft = (30,550)
-    
-    login_rect = loginButton.get_rect()
-    login_rect.topleft = (30,650)
-
-    register_rect2 = registerButton.get_rect()
-    register_rect2.topleft = (670,550)
-    
-    login_rect2 = loginButton.get_rect()
-    login_rect2.topleft = (670,650)
 
     while run:
         mousePos = pygame.mouse.get_pos()
@@ -115,16 +104,23 @@ def Accounts():
                 if register_rect.collidepoint(mousePos):
                     register()
                 if login_rect.collidepoint(mousePos):
-                    login()
+                    joueur1 = login()
+                    player1_txt = textfont.render(f"Joueurs 1 : {joueur1}", 1, (255,255,255))
+                    logins += 1
                 if register_rect2.collidepoint(mousePos):
                     register()
                 if login_rect2.collidepoint(mousePos):
-                    login()
-
+                    joueur2 = login()
+                    player2_txt = textfont.render(f"Joueurs 2 : {joueur2}", 1, (255,255,255))
+                    screen.blit(player2_txt, (650,450))
+                    logins += 1
+            if logins >= 2:
+                MainGame() 
+            if logins == 1:
+                screen.blit(player1_txt, (15,450)) 
         #Textes
         Title = Titlefont.render("SIAM", 1, (255,255,255))
-        player1_txt = textfont.render("Joueurs 1 :", 1, (255,255,255))
-        player2_txt = textfont.render("Joueurs 2 :", 1, (255,255,255))
+        
 
         screen.blit(bgImage, (0,0))
 
@@ -139,8 +135,8 @@ def Accounts():
 
         #Afficher les textes
         screen.blit(Title, (220,100))
-        screen.blit(player1_txt, (15,450))
-        screen.blit(player2_txt, (650,450))
+        
+        
         pygame.display.flip()
 
 def selectPlayers():
@@ -217,16 +213,19 @@ def MainGame():
                     if piecesSelected == 0:
                         for piece in pions:
                             piece.select()
-                    if plateau[caseIndexY][caseIndexX] == 0:
-                        print("peut poser ici")
-                        print(plateau[caseIndexY][caseIndexX])
+                    if piecesSelected == 1:
                         for piece in pions:
                             piece.poser()
                             piecesSelected = 0
-            
-        
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RIGHT:
+                    for piece in pions:
+                        piece.rotate(90)
+                if event.key == pygame.K_LEFT:
+                    for piece in pions:
+                        piece.rotate(-90)
         screen.fill((0,0,0))   
-        screen.blit(bgImage, (0,0))              
+        screen.blit(bgImage, (0,0))   
         drawPlate(screen, color1, color2, 250, 250, square, square)       
         for i in range(7):
             for k in range(5):
@@ -235,4 +234,4 @@ def MainGame():
             piece.Update()
         pygame.display.flip()
         
-MainMenu()
+MainGame()
