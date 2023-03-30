@@ -46,3 +46,15 @@ loginButton = pygame.image.load("siam_game/sources/login.png")
 
 Titlefont = pygame.font.Font("siam_game/sources/Comics Deluxe.ttf", 200)
 textfont = pygame.font.Font("siam_game/sources/Comics Deluxe.ttf", 50)
+
+register_rect = registerButton.get_rect()
+register_rect.topleft = (30,550)
+
+login_rect = loginButton.get_rect()
+login_rect.topleft = (30,650)
+
+register_rect2 = registerButton.get_rect()
+register_rect2.topleft = (670,550)
+
+login_rect2 = loginButton.get_rect()
+login_rect2.topleft = (670,650)
