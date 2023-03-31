@@ -3,8 +3,7 @@ import pygame
 
 from siam_game.ressources import *
 from siam_game.pieces import *
-from siam_game.plateau import drawPlate
-from siam_game.dataMenu import *
+from siam_game.plateau import drawPlate  
 
 clock = pygame.time.Clock()
 rhino_rect = pygame.Surface.get_rect(rhino)
@@ -174,7 +173,6 @@ def selectPlayers():
         screen.blit(player2, (30,650))
         pygame.display.flip()
         
-
 def MainGame():
     pygame.display.set_caption("Fenêtre de jeu")
     run = True
