@@ -28,7 +28,7 @@ rhino = pygame.image.load("siam_game/sources/rhino.png")
 rhino = pygame.transform.scale(rhino, (square, square))
 
 #elephant
-eleph = pygame.image.load("siam_game/sources/eleph.png")
+eleph = pygame.image.load("siam_game/sources/elephant.png")
 eleph = pygame.transform.scale(eleph, (square, square))
 
 #montagne
