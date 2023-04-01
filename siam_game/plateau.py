@@ -2,13 +2,13 @@ import pygame
 from siam_game.ressources import *
 
 plateau = [
+        [1,1,1,1,1],
         [0,0,0,0,0],
         [0,0,0,0,0],
+        [0,2,3,4,0],
         [0,0,0,0,0],
         [0,0,0,0,0],
-        [0,0,0,0,0],
-        [0,0,0,0,0],
-        [0,0,0,0,0]
+        [1,1,1,1,1]
     ]
 
 def drawPlate(surface, color, colorbis, posX, posY, width, height):
