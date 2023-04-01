@@ -224,10 +224,7 @@ def MainGame():
                         piece.rotate(-90)
         screen.fill((0,0,0))   
         screen.blit(bgImage, (0,0))   
-        drawPlate(screen, color1, color2, 250, 250, square, square)       
-        for i in range(7):
-            for k in range(5):
-                plateau[i][k] = 0     
+        drawPlate(screen, color1, color2, 250, 250, square, square)
         for piece in pieces:
             piece.Update()
         pygame.display.flip()
