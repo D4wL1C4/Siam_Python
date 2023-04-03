@@ -1,21 +1,18 @@
 import csv
 import pygame
 
+#importe les fichier.py dans le dossier "siam_game"
 from siam_game.ressources import *
 from siam_game.pieces import *
 from siam_game.plateau import drawPlate  
-
-clock = pygame.time.Clock()
-rhino_rect = pygame.Surface.get_rect(rhino)
-
-
 
 def initGame():
     pygame.init()
     pygame.font.init()
     #dessiner le plateau et placer tous les pions au bon endroit
-    drawPlate(screen, color1, color2, 250, 250, square, square) #Plateau
+    drawPlate(screen, color1, color2, 250, 250, square, square)
 
+#Menu principal
 def MainMenu():
     initGame()
     pygame.display.set_caption("Menu principal")
@@ -42,7 +39,7 @@ def MainMenu():
         screen.blit(play,(300,400))
         screen.blit(Title, (220, 100))
         pygame.display.flip()    
-
+#s'inscrire
 def register():
     with open('user.csv', "r+", newline='') as f:
         table = list(csv.DictReader(f, delimiter=";"))
@@ -57,7 +54,7 @@ def register():
 
         if password == passw2:
             writer.writerow([username, password])
-            print('Inscription réussi !')
+            print('Inscription réussie !')
         else:
             print("Ton mot de passe n'est pas le même")
 
@@ -68,24 +65,26 @@ def login():
         reader = csv.reader(f, delimiter=';')
         for row in reader:
             if row == [username, password]: 
-                print('loged in')
+                print('Connecté')
                 return username
         print("Ton nom d'utilisateur ou ton mot de passe est erroné ou n'existe pas")
         return False
     
-def login2():
+
     username = input('Entre ton pseudo pour te connecter : ')
     password = input('Entre ton mot de passe : ')
     with open('user.csv', mode = 'r') as f:
         reader = csv.reader(f, delimiter=';')
         for row in reader:
             if row == [username, password]: 
-                print('loged in')
+                print('Connecté !')
                 return username
         print("Ton nom d'utilisateur ou ton mot de passe est erroné ou n'existe pas")
         return False
 
 def Accounts():
+    global joueur1
+    global joueur2
     logins = 0
     pygame.display.set_caption("Comptes")
     run = True
@@ -104,7 +103,6 @@ def Accounts():
                     register()
                 if login_rect.collidepoint(mousePos):
                     joueur1 = login()
-                    player1_txt = textfont.render(f"Joueurs 1 : {joueur1}", 1, (255,255,255))
                     logins += 1
                 if register_rect2.collidepoint(mousePos):
                     register()
@@ -115,20 +113,20 @@ def Accounts():
                     logins += 1
             if logins >= 2:
                 MainGame() 
-            if logins == 1:
-                screen.blit(player1_txt, (15,450)) 
         #Textes
         Title = Titlefont.render("SIAM", 1, (255,255,255))
-        
-
+        player1_txt = textfont.render("Joueurs 1 : ", 1, (255,255,255))
+        player2_txt = textfont.render("Joueurs 2 : ", 1, (255,255,255))
         screen.blit(bgImage, (0,0))
 
         #Buttons
         #Player 1 : 
+        screen.blit(player1_txt, (30,400))
         screen.blit(registerButton, (30,550))
         screen.blit(loginButton,(30,650))
 
         #Player 2 :
+        screen.blit(player2_txt, (650, 400))
         screen.blit(registerButton, (670,550))
         screen.blit(loginButton,(670,650))
 
@@ -137,43 +135,11 @@ def Accounts():
         
         
         pygame.display.flip()
-
-def selectPlayers():
-    with open("user.csv", "r") as f:
-        users = list(csv.reader(f, delimiter=";"))
-    
-    pygame.display.set_caption("Joueurs")
-    run = True
-    fps = 60
-
-    joueur1 = login()
-    joueur2 = login()
-
-    while run:
-        mousePos = pygame.mouse.get_pos()
-        clock.tick(fps)
-        pygame.display.update()
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                run = False
-                quit()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                pass
-        
-        ### Textes à afficher
-        Title = Titlefont.render("SIAM", 1, (255,255,255))
-        player1 = textfont.render(f"Joueurs 1 : {joueur1}", 1, (255,255,255))
-        player2 = textfont.render(f"Joueurs 2 : {joueur2}", 1, (255,255,255))
-
-        screen.blit(bgImage, (0,0))
-
-        ### Afficher ces textes
-        screen.blit(Title, (220,100))
-        screen.blit(player1, (30,450))
-        screen.blit(player2, (30,650))
-        pygame.display.flip()
         
 def MainGame():
+    global joueur1
+    global joueur2
+    
     pygame.display.set_caption("Fenêtre de jeu")
     run = True
     fps = 60
@@ -182,8 +148,8 @@ def MainGame():
         
         clock.tick(fps)
         pygame.display.update()
-        mousePos = pygame.mouse.get_pos()
-        caseIndexX = int((mousePos[0] - 250)/100)
+        mousePos = pygame.mouse.get_pos() #récupère la position du curseur
+        caseIndexX = int((mousePos[0] - 250)/100) # transforme le résultat en index de colonnes / lignes (ex : 0;1 --- 3;4 etc...)
         caseIndexY = int((mousePos[1] - 150)/100)
         
         rhino_1.move(mousePos[0], mousePos[1])
@@ -202,9 +168,9 @@ def MainGame():
             if event.type == pygame.QUIT:
                 run = False
                 quit()
-            if event.type == pygame.MOUSEBUTTONDOWN: #calcule la position du curseur
-                if pygame.mouse.get_pos()[0] > 250 and pygame.mouse.get_pos()[0] < 750 and pygame.mouse.get_pos()[1] > 150 and pygame.mouse.get_pos()[1] < 850:
-                    print(caseIndexX, caseIndexY) # transforme le resultat en index de colonnes / lignes (ex : 0;1 - 3;4 etc...)
+            if event.type == pygame.MOUSEBUTTONDOWN: 
+                if pygame.mouse.get_pos()[0] > 150 and pygame.mouse.get_pos()[0] < 850 and pygame.mouse.get_pos()[1] > 150 and pygame.mouse.get_pos()[1] < 850:
+                    print(caseIndexX, caseIndexY) 
                     for piece in pions:
                         if piece.selected == True:
                             piecesSelected +=1
@@ -224,9 +190,30 @@ def MainGame():
                         piece.rotate(-90)
         screen.fill((0,0,0))   
         screen.blit(bgImage, (0,0))   
+
+        ### Textes à afficher
+        player1 = textfont.render(joueur1, 1, (255,255,255))
+        player2 = textfont.render(joueur2, 1, (255,255,255))
+
+        ### Afficher ces textes
+        screen.blit(player1, (70,5))
+        screen.blit(player2, (750,920))
+
         drawPlate(screen, color1, color2, 250, 250, square, square)
         for piece in pieces:
             piece.Update()
+        CheckEndGame()
         pygame.display.flip()
         
-MainGame()
+def CheckEndGame():
+    for i in range(6):
+        if plateau[i][0] == 2 or plateau[i][0] == 3 or plateau[i][0] == 4:
+            MainMenu()
+        elif plateau[i][6] == 2 or plateau[i][6] == 3 or plateau[i][6] == 4:
+            MainMenu()
+        elif plateau[0][i] == 2 or plateau[0][i] == 3 or plateau[0][i] == 4:
+            MainMenu()
+        elif plateau[6][i] == 2 or plateau[6][i] == 3 or plateau[6][i] == 4:
+            MainMenu()
+
+MainMenu() 
